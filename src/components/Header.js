@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import firebase from 'firebase/app';
@@ -75,6 +77,10 @@ class Header extends Component {
           {this.state.username}
         </Button>
         <Button color="inherit" className={classes.button} onClick={this.googleSignOut}>Sign Out</Button>
+        <Button variant="contained" color="default">
+          <Link to="/upload" className={classes.link}>Upload</Link>
+          <CloudUploadIcon className={classes.rightIcon} />
+        </Button>
       </div>
     );
   }
@@ -87,7 +93,7 @@ class Header extends Component {
         <AppBar position="static" color="primary">
           <Toolbar>
             <Typography variant="title" color="inherit" className={classes.flex}>
-              Firebase Videos
+              <Link to="/" className={classes.link}>Firebase Videos</Link>
             </Typography>
             {this.state.isLogin ? this.renderLoginedComponent(classes) : this.renderLoginComponent(classes)}
           </Toolbar>
