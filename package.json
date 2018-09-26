@@ -8,8 +8,10 @@
     "firebase": "^5.5.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-loading-overlay": "^0.3.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.5"
+    "react-scripts": "1.1.5",
+    "video-react": "^0.13.0"
   },
   "scripts": {
     "start": "react-scripts start",
