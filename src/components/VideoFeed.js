@@ -8,7 +8,6 @@ import VideoPlayer from './VideoPlayer';
 
 const styles = theme => ({
   root: {
-    flexGrow: 0,
     padding: "50px",
   },
 });
