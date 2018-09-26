@@ -1,2 +1,2 @@
-# firebase-youtube-clone
-技術書典5に出典した「Firebaseによるサーバーレスシングルページアプリケーション」のリポジトリです。
+# Firebase YouTube Clone
+- 技術書典5 で出典した書籍のサンプルアプリケーションです。
