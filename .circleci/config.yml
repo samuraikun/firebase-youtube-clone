@@ -6,7 +6,6 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
       - image: circleci/node:8
       
       # Specify service dependencies here if necessary
@@ -14,7 +13,7 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-    working_directory: ~/repo
+    working_directory: ~/firebase-youtube-clone
 
     steps:
       - checkout
@@ -27,11 +26,18 @@ jobs:
           - v1-dependencies-
 
       - run: npm install
+      - run:
+          name: 'Install Dependecies'
+          command: npm install --save-dev firebase-tools create-react-app
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
         
-      # run tests!
-      - run: npm run circleci
+      - run:
+          name: 'Build Client Code'
+          command: npm run build
+      - run:
+          name: 'Deploy to Hosting'
+          command: firebase deploy --only hosting --project "$FIREBASE_PROJECT_ID" --token "$FIREBASE_TOKEN"
