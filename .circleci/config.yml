@@ -40,5 +40,6 @@ jobs:
           command: npm run build
       - run:
           name: 'Deploy to Hosting'
-          command: ln -s ./node_modules/.bin/firebase . && \
-                   ./firebase deploy --only hosting --project "$FIREBASE_PROJECT_ID" --token "$FIREBASE_TOKEN"
+          command: >- 
+              ln -s ./node_modules/firebase-tools/bin/firebase . &&
+              ./firebase deploy --only hosting --project "$FIREBASE_PROJECT_ID" --token "$FIREBASE_TOKEN"
