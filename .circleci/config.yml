@@ -28,7 +28,7 @@ jobs:
       - run: npm install
       - run:
           name: 'Install Dependecies'
-          command: npm install --save-dev firebase-tools create-react-app
+          command: npm install --save-dev firebase-tools
 
       - save_cache:
           paths:
@@ -40,4 +40,5 @@ jobs:
           command: npm run build
       - run:
           name: 'Deploy to Hosting'
-          command: firebase deploy --only hosting --project "$FIREBASE_PROJECT_ID" --token "$FIREBASE_TOKEN"
+          command: ln -s ./node_modules/.bin/firebase . && \
+                   ./firebase deploy --only hosting --project "$FIREBASE_PROJECT_ID" --token "$FIREBASE_TOKEN"
