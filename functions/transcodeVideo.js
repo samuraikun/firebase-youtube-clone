@@ -11,11 +11,15 @@ const {Storage} = require('@google-cloud/storage');
 const gcs = new Storage({keyFilename: './config/service_account.json'});
 
 const admin = require('firebase-admin');
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://fir-reacty-videos.firebaseio.com"
-});
-admin.firestore().settings({timestampsInSnapshots: true});
+try {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://fir-reacty-videos.firebaseio.com"
+  });
+  admin.firestore().settings({timestampsInSnapshots: true});
+} catch (error) {
+  console.log(error);
+}
 
 function promisifyCommand(command) {
   return new Promise((resolve, reject) => {
