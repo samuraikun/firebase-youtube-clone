@@ -38,7 +38,7 @@ class Upload extends Component {
         let metadata = _.omitBy(fileSnapshot.metadata, _.isEmpty);
         metadata = Object.assign(metadata, {downloadURL: downloadURL});
 
-        this.saveVideoMetadata(metadata);
+        await this.saveVideoMetadata(metadata);
       }
 
       if (fileSnapshot.state === 'success') {
@@ -58,9 +58,11 @@ class Upload extends Component {
     }
   }
 
-  saveVideoMetadata(metadata) {
-    const collection = firebase.firestore().collection('videos');
-    return collection.add(metadata);
+  async saveVideoMetadata(metadata) {
+    const user_id = firebase.auth().currentUser.uid;
+    const videoRef = firebase.firestore().doc(`users/${user_id}`).collection('videos').doc();
+
+    await videoRef.set(metadata, { merge: true });
   }
 
   render() {
