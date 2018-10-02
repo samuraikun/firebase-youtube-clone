@@ -27,6 +27,14 @@ function promisifyCommand(command) {
   });
 }
 
+async function saveVideoMetadata(userToken, metadata) {
+  const decodedToken = await admin.auth().verifyIdToken(userToken);
+  const user_id = decodedToken.uid;
+  const videoRef = admin.firestore().doc(`users/${user_id}`).collection('videos').doc();
+  
+  await videoRef.set(metadata, { merge: true });
+}
+
 exports.transcodeVideo = functions.storage.object().onFinalize(async object => {
   try {
     if (!object.contentType.includes('video') || object.contentType.endsWith('mp4')) {
@@ -69,8 +77,9 @@ exports.transcodeVideo = functions.storage.object().onFinalize(async object => {
     let metadata = await videoFile.getMetadata();
     const downloadURL = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(targetTranscodedFilePath)}?alt=media&token=${token}`;
     metadata = Object.assign(metadata[0], {downloadURL: downloadURL});
+    const userToken = object.metadata.idToken;
 
-    await admin.firestore().collection('videos').add(metadata);
+    await saveVideoMetadata(userToken, metadata);
 
     fs.unlinkSync(tempFilePath);
     fs.unlinkSync(targetTempFilePath);
