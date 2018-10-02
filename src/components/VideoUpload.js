@@ -31,7 +31,6 @@ class Upload extends Component {
       const videoStorageRef = firebase.storage().ref(filePath);
       const idToken = await firebase.auth().currentUser.getIdToken(true);
       const metadataForStorage = {
-        name: `${video.name}_sample`,
         customMetadata: {
           idToken: idToken
         }
@@ -68,6 +67,7 @@ class Upload extends Component {
   async saveVideoMetadata(metadata) {
     const user_id = firebase.auth().currentUser.uid;
     const videoRef = firebase.firestore().doc(`users/${user_id}`).collection('videos').doc();
+    metadata = Object.assign(metadata, { uid: videoRef.id });
 
     await videoRef.set(metadata, { merge: true });
   }
