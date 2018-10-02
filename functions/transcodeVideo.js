@@ -75,7 +75,8 @@ exports.transcodeVideo = functions.storage.object().onFinalize(async object => {
       }
     });
 
-    let metadata = await videoFile.getMetadata();
+    let transcodedVideoFile = await bucket.file(targetStorageFilePath);
+    let metadata = await transcodedVideoFile.getMetadata();
     const downloadURL = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(targetTranscodedFilePath)}?alt=media&token=${token}`;
     metadata = Object.assign(metadata[0], {downloadURL: downloadURL});
     const userToken = object.metadata.idToken;
