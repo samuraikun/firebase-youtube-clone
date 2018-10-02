@@ -31,6 +31,7 @@ async function saveVideoMetadata(userToken, metadata) {
   const decodedToken = await admin.auth().verifyIdToken(userToken);
   const user_id = decodedToken.uid;
   const videoRef = admin.firestore().doc(`users/${user_id}`).collection('videos').doc();
+  metadata = Object.assign(metadata, { uid: videoRef.id });
   
   await videoRef.set(metadata, { merge: true });
 }
