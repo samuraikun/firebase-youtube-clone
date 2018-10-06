@@ -1,30 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import AuthModal from './AuthModal';
-import Button from '@material-ui/core/Button';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import Avatar from '@material-ui/core/Avatar';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-
-const styles = theme => ({
-  button: {
-    margin: theme.spacing.unit,
-  },
-  rightIcon: {
-    marginLeft: theme.spacing.unit,
-  },
-  avatar: {
-    margin: 10,
-    backgroudColor: 'white',
-  },
-  link: {
-    textDecoration: 'none',
-    color: 'white',
-  },
-});
+import UserItem from './UserItem';
+import AuthButton from './AuthButton';
 
 class NavigationItem extends Component {
   constructor(props) {
@@ -33,7 +11,6 @@ class NavigationItem extends Component {
     this.state = {
       isLogin: false,
       user: null,
-      visibleModal: false,
     }
   }
 
@@ -47,55 +24,15 @@ class NavigationItem extends Component {
     });
   }
 
-  googleLogin = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-
-    firebase.auth().signInWithRedirect(provider);
-  }
-
-  googleSignOut = () => {
-    firebase.auth().signOut()
-      .then(() => window.location.href = '/');
-  }
-
-  openModal = () => {
-    this.setState({ visibleModal: true });
-  }
-
-  closeModal = () => {
-    this.setState({ visibleModal: false });
-  }
-
   renderAuthButton = () => {
-    const { classes } = this.props;
-
     return (
-      <div>
-        <Button color="inherit" className={classes.button} onClick={this.openModal}>登録</Button>
-        <Button color="inherit" className={classes.button} onClick={this.openModal}>ログイン</Button>
-        <AuthModal
-          open={this.state.visibleModal}
-          onClose={this.closeModal}
-        />
-      </div>
+      <AuthButton />
     );
   }
 
   renderUserItem = user => {
-    const { classes } = this.props;
-
     return (
-      <div>
-        <Button color="inherit" className={classes.button}>
-          <Avatar alt="profile image" src={`${user.photoURL}`} className={classes.avatar} />
-          {user.displayName}
-        </Button>
-        <Button color="inherit" className={classes.button} onClick={this.googleSignOut}>Sign Out</Button>
-        <Button variant="contained" color="default">
-          <Link to="/upload" className={classes.link}>Upload</Link>
-          <CloudUploadIcon className={classes.rightIcon} />
-        </Button>
-      </div>
+      <UserItem user={user} />
     );
   }
 
@@ -108,8 +45,4 @@ class NavigationItem extends Component {
   }
 }
 
-NavigationItem.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(NavigationItem);
+export default NavigationItem;

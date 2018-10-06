@@ -3,16 +3,11 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import blue from '@material-ui/core/colors/blue';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase';
 import 'firebase/auth';
 
 const styles = {
-  avatar: {
-    backgroundColor: blue[100],
-    color: blue[600],
-  },
   dialogTitle: {
     textAlign: 'center'
   }
