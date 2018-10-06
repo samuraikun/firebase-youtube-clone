@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent
+} from '@material-ui/core';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import 'firebase/auth';
+import SignUpForm from './SignUpForm';
+import LoginForm from './LoginForm';
 
-const styles = {
+const styles = theme => ({
+  margin: {
+    margin: theme.spacing.unit,
+  },
   dialogTitle: {
     textAlign: 'center'
+  },
+  authBasicForm: {
+    textAlign: 'center'
   }
-};
+});
 
 const uiConfig = {
   signInFlow: 'popup',
@@ -32,12 +43,21 @@ class AuthModal extends Component {
   }
 
   render() {
-    const { classes, onClose, ...other } = this.props;
+    const { classes, onClose, title, ...other } = this.props;
 
     return (
-      <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other}>
-        <DialogTitle id="login-dialog-title" className={classes.dialogTitle}>ログイン</DialogTitle>
-        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
+      <Dialog
+        onClose={this.handleClose}
+        aria-labelledby="login-dialog-title"
+        {...other}
+      >
+        <DialogTitle id="login-dialog-title" className={classes.dialogTitle}>{title}</DialogTitle>
+        <DialogContent>
+          <div className={classes.authBasicForm}>
+            {title === '登録' ? <SignUpForm /> : <LoginForm />}
+          </div>
+          <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
+        </DialogContent>
       </Dialog>
     );
   }
