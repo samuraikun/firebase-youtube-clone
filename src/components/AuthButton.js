@@ -14,15 +14,15 @@ class AuthButton extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { visibleModal: false }
+    this.state = { visibleModal: false, title: '' }
   }
 
-  openModal = () => {
-    this.setState({ visibleModal: true });
+  openModal = modalTitle => {
+    this.setState({ visibleModal: true, title: modalTitle });
   }
 
   closeModal = () => {
-    this.setState({ visibleModal: false });
+    this.setState({ visibleModal: false, modalTitle: '' });
   }
 
   render() {
@@ -30,11 +30,12 @@ class AuthButton extends Component {
 
     return (
       <div>
-        <Button color="inherit" className={classes.button} onClick={this.openModal}>登録</Button>
-        <Button color="inherit" className={classes.button} onClick={this.openModal}>ログイン</Button>
+        <Button color="inherit" className={classes.button} onClick={() => this.openModal('登録')}>登録</Button>
+        <Button color="inherit" className={classes.button} onClick={() => this.openModal('ログイン')}>ログイン</Button>
         <AuthModal
           open={this.state.visibleModal}
           onClose={this.closeModal}
+          title={this.state.title}
         />
       </div>
     );

@@ -33,12 +33,14 @@ class UserItem extends Component {
 
   render() {
     const { classes, user } = this.props;
+    const defaultUserName = '名無しさん';
+    const defaultUserIcon = 'https://firebasestorage.googleapis.com/v0/b/fir-clone-1a266.appspot.com/o/default-user-icons%2F1.png?alt=media&token=b5e090f4-d2b1-4544-92bd-379a3d22b470';
 
     return (
       <div>
         <Button color="inherit" className={classes.button}>
-          <Avatar alt="profile image" src={`${user.photoURL}`} className={classes.avatar} />
-          {user.displayName}
+          <Avatar alt="profile image" src={`${user.photoURL || defaultUserIcon}`} className={classes.avatar} />
+          {user.displayName || defaultUserName}
         </Button>
         <Button color="inherit" className={classes.button} onClick={this.googleSignOut}>ログアウト</Button>
         <Button variant="contained" color="default">
