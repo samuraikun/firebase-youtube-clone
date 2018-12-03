@@ -29,16 +29,22 @@ class Upload extends Component {
     try {
       const filePath = `videos/${firebase.auth().currentUser.uid}/${video.name}`;
       const videoStorageRef = firebase.storage().ref(filePath);
-      const fileSnapshot = await videoStorageRef.put(video);
+      const idToken = await firebase.auth().currentUser.getIdToken(true);
+      const metadataForStorage = {
+        customMetadata: {
+          idToken: idToken
+        }
+      }
+      const fileSnapshot = await videoStorageRef.put(video, metadataForStorage);
 
       // mp4以外の動画は、Cloud Functions上で、トランスコードした後に
       // メタデータを Firestore に保存する
       if (video.type === 'video/mp4') {
         const downloadURL = await videoStorageRef.getDownloadURL();
-        let metadata = _.omitBy(fileSnapshot.metadata, _.isEmpty);
-        metadata = Object.assign(metadata, {downloadURL: downloadURL});
+        let metadataForFirestore = _.omitBy(fileSnapshot.metadata, _.isEmpty);
+        metadataForFirestore = Object.assign(metadataForFirestore, {downloadURL: downloadURL});
 
-        this.saveVideoMetadata(metadata);
+        await this.saveVideoMetadata(metadataForFirestore);
       }
 
       if (fileSnapshot.state === 'success') {
@@ -58,9 +64,12 @@ class Upload extends Component {
     }
   }
 
-  saveVideoMetadata(metadata) {
-    const collection = firebase.firestore().collection('videos');
-    return collection.add(metadata);
+  async saveVideoMetadata(metadata) {
+    const user_id = firebase.auth().currentUser.uid;
+    const videoRef = firebase.firestore().doc(`users/${user_id}`).collection('videos').doc();
+    metadata = Object.assign(metadata, { uid: videoRef.id });
+
+    await videoRef.set(metadata, { merge: true });
   }
 
   render() {
