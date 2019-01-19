@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import firebase from 'firebase/app';
-import 'firebase/firestore';
 import VideoPlayer from './VideoPlayer';
 
 const styles = theme => ({
@@ -13,22 +11,8 @@ const styles = theme => ({
 });
 
 class VideoFeed extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { videos: [] }
-  }
-
-  async componentWillMount() {
-    const datas = [];
-    const collection = await firebase.firestore().collection('videos').limit(50);
-    const querySnapshot = await collection.get();
-
-    await querySnapshot.forEach(doc => {
-      datas.push(doc.data());
-    });
-
-    this.setState({ videos: datas });
+  componentDidMount() {
+    this.props.fetchVideos();
   }
 
   renderVideoPlayers(videos) {
@@ -42,7 +26,7 @@ class VideoFeed extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, videos } = this.props;
 
     return (
       <Grid
@@ -53,7 +37,7 @@ class VideoFeed extends Component {
         justify="flex-start"
         alignItems="center"
       >
-        {this.renderVideoPlayers(this.state.videos)}
+        {this.renderVideoPlayers(videos)}
       </Grid>
     );
   }

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import LoadingOverlay from 'react-loading-overlay';
-import firebase from 'firebase/app';
-import 'firebase/storage';
-import 'firebase/firestore';
+import firebase from '../config/firebase';
 import _ from 'lodash';
 
 class Upload extends Component {
