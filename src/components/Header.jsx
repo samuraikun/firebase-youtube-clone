@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import NavigationItem from './NavigationItem';
+import AuthContainer from '../containers/authContainer';
 
 const styles = {
   root: {
@@ -31,7 +31,7 @@ class Header extends Component {
             <Typography variant="title" color="inherit" className={classes.flex}>
               <Link to="/" className={classes.link}>Firebase Videos</Link>
             </Typography>
-            <NavigationItem />
+            <AuthContainer />
           </Toolbar>
         </AppBar>
       </div>
