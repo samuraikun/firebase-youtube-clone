@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { withFirebase } from 'react-redux-firebase';
 import NavigationItem from '../components/NavigationItem';
 
 const mapStateToProps = state => ({
@@ -7,4 +6,4 @@ const mapStateToProps = state => ({
   profile: state.firebase.profile
 });
 
-export default withFirebase(connect(mapStateToProps)(NavigationItem));
+export default connect(mapStateToProps)(NavigationItem);
