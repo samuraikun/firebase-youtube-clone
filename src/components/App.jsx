@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from './Header';
 import VideoUpload from './VideoUpload';
-import VideosContainer from '../container/videosContainer'; 
+import VideosContainer from '../containers/videosContainer'; 
 
 class App extends Component {
   render() {
