@@ -1,15 +1,19 @@
 service cloud.firestore {
   match /databases/{database}/documents {
+    function auth() {
+      return request.auth;
+    }
+
     function isAuthenticated() {
-      return request.auth.uid != null;
+      return auth().uid != null;
     }
 
     function isUserAuthenticated(userId) {
-      return request.auth.uid == userId;
+      return auth().uid == userId;
     }
 
     function isAdmin() {
-      return exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+      return exists(/databases/$(database)/documents/admins/$(auth().uid));
     }
 
     match /users/{userId} {
